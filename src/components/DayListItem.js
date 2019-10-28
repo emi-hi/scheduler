@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+
 import './DayListItem.scss'
 import classNames from 'classnames';
 
