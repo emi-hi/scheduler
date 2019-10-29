@@ -34,6 +34,11 @@ const appointments = [
   },
   {
     id: 4,
+    time: "3pm"
+  },
+
+  {
+    id: 5,
     time: "4pm",
     interview: {
       student: "Emily Hillier",
