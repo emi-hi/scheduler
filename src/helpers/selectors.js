@@ -1,4 +1,4 @@
-export function getAppointmentsForDay(state, day) {
+export default function getAppointmentsForDay(state, day) {
   let filteredApps = [];
   for (let days of state.days) {
     if (days.name === day) {
