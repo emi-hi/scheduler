@@ -6,11 +6,11 @@ export default function useVisualMode(initial) {
 
   function transition(newMode, replace = false) {
       setMode(newMode);
-      setHistory(currHist => {
+      setHistory(prev => {
         if (replace) {
-          currHist.pop();
+          prev.pop();
         }
-        const newHist = [...currHist, newMode]
+        const newHist = [...prev, newMode]
         return newHist
       });
     }
@@ -26,3 +26,5 @@ export default function useVisualMode(initial) {
   }
   return { mode, transition, back }
 }
+
+
