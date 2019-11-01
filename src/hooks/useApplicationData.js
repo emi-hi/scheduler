@@ -23,18 +23,10 @@ function reducer(state, action) {
         [action.id]: appointment
       };
 
-      let editSpot;
-      for (let i in state.appointments) {
-        if (state.appointments[i]["id"] === action.id) {
-          if (state.appointments[i]["interview"] != null) {
-            editSpot = "editing, don't include in calculations"
-          }
-        }
-      }
       const days = state.days.map((item) => {
         if (item["appointments"].includes(action.id)) {
           if (action.spotUpdate === 'addInterview') {
-            if (!editSpot) {
+            if (state.appointments[action.id]["interview"] === null) {
               item["spots"]--
             }
           } else if (action.spotUpdate === 'removeInterview') {
