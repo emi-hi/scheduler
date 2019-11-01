@@ -31,6 +31,7 @@ export default function Appointment(props) {
   }
 
   function save(name, interviewer) {
+    //add check for name, interviewer
     transition(SAVING)
     const interview = {
       student: name,
