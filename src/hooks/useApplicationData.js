@@ -22,7 +22,6 @@ function reducer(state, action) {
         ...state.appointments,
         [action.id]: appointment
       };
-
       const days = state.days.map((item) => {
         if (item["appointments"].includes(action.id)) {
           if (action.spotUpdate === 'addInterview') {
