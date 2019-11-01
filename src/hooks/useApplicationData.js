@@ -1,5 +1,6 @@
-import React, { useEffect, useReducer} from "react";
+import { useEffect, useReducer } from "react";
 import Axios from "axios";
+
 
 const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
@@ -14,13 +15,24 @@ function reducer(state, action) {
       return { ...state, days: action.days, appointments: action.appointments, interviewers: action.interviewers }
     case SET_INTERVIEW: {
       const appointment = {
-        ...state.appointments[action.inputs.id],
-        interview: action.inputs.interview ? { ...action.inputs.interview } : null };
+        ...state.appointments[action.id],
+        interview: action.interview
+      };
       const appointments = {
         ...state.appointments,
-        [action.inputs.id]: appointment
+        [action.id]: appointment
       };
-      return { ...state, appointments }
+      const days = state.days.map((item) => {
+        if (item["appointments"].includes(action.id)) {
+          if (action.spotUpdate === 'addInterview') {
+            item["spots"]--
+          } else {
+            item["spots"]++
+          }
+        } 
+        return item
+      })
+      return { ...state, appointments, days }
     }
     default:
       throw new Error(
@@ -28,7 +40,6 @@ function reducer(state, action) {
       );
   }
 }
-
 
 export default function useApplicationData() {
   const [state, dispatch] = useReducer(reducer, {
@@ -49,21 +60,21 @@ export default function useApplicationData() {
     Promise.resolve(promise2),
     Promise.resolve(promise3),
   ]).then((all) => {
-    dispatch({ type: SET_APPLICATION_DATA, days: all[0].data, appointments: all[1].data, interviewers: all[2].data });
+    dispatch({ type: SET_APPLICATION_DATA, days: all[0].data, appointments: all[1].data, interviewers: all[2].data })
   });
   },[]);
 
   function bookInterview(id, interview) {
-    const inputs = { id, interview };
+    const spotUpdate = 'addInterview'
     return Axios.put(`/api/appointments/${id}`, { interview })
-        .then(() => dispatch({ type: SET_INTERVIEW, inputs }));
+        .then(() => dispatch({ type: SET_INTERVIEW, id, interview, spotUpdate }))
   };
-
+  
   function cancelInterview(id) {
-    const inputs = { id, interview:null };
+    const spotUpdate = 'removeInterview'
     return Axios.delete(`/api/appointments/${id}`)
-    .then(() => dispatch({ type: SET_INTERVIEW, inputs }));
-  };
+    .then(() => dispatch({ type: SET_INTERVIEW, id, interview:null, spotUpdate }))
 
+  };
   return { state, setDay, bookInterview, cancelInterview };
 }
