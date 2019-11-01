@@ -22,11 +22,22 @@ function reducer(state, action) {
         ...state.appointments,
         [action.id]: appointment
       };
+
+      let editSpot;
+      for (let i in state.appointments) {
+        if (state.appointments[i]["id"] === action.id) {
+          if (state.appointments[i]["interview"] != null) {
+            editSpot = "editing, don't include in calculations"
+          }
+        }
+      }
       const days = state.days.map((item) => {
         if (item["appointments"].includes(action.id)) {
           if (action.spotUpdate === 'addInterview') {
-            item["spots"]--
-          } else {
+            if (!editSpot) {
+              item["spots"]--
+            }
+          } else if (action.spotUpdate === 'removeInterview') {
             item["spots"]++
           }
         } 
@@ -65,11 +76,15 @@ export default function useApplicationData() {
   },[]);
 
   function bookInterview(id, interview) {
+
+    // console.log(state)
+    // console.log(id)
+    // console.log(interview)
     const spotUpdate = 'addInterview'
     return Axios.put(`/api/appointments/${id}`, { interview })
         .then(() => dispatch({ type: SET_INTERVIEW, id, interview, spotUpdate }))
   };
-  
+
   function cancelInterview(id) {
     const spotUpdate = 'removeInterview'
     return Axios.delete(`/api/appointments/${id}`)
