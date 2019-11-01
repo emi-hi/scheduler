@@ -7,6 +7,7 @@ import Form from './Form.js';
 import Status from './Status.js'
 import Confirm from './Confirm.js'
 import Error from './Error.js'
+
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE"
@@ -31,16 +32,19 @@ export default function Appointment(props) {
   }
 
   function save(name, interviewer) {
-    //add check for name, interviewer
-    transition(SAVING)
-    const interview = {
-      student: name,
-      interviewer
-    };
-    props
-      .bookInterview(props.id, interview)
-      .then(() => transition(SHOW))
-      .catch((err) => transition(ERROR_SAVE, true))
+    if (!name | !interviewer) {
+      transition(ERROR_SAVE, true)
+    } else {
+      transition(SAVING)
+      const interview = {
+        student: name,
+        interviewer
+      };
+      props
+        .bookInterview(props.id, interview)
+        .then(() => transition(SHOW))
+        .catch((err) => transition(ERROR_SAVE, true))
+    }
   }
 
   return (
@@ -83,7 +87,7 @@ export default function Appointment(props) {
       <Form
       interviewers={props.interviewers}
       interviewer={props.interview.interviewer.id}
-      student={props.interview.student}
+      name={props.interview.student}
       onSave={save}
       onCancel={back}
       />
