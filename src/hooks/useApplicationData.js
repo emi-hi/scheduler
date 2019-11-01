@@ -68,10 +68,6 @@ export default function useApplicationData() {
   },[]);
 
   function bookInterview(id, interview) {
-
-    // console.log(state)
-    // console.log(id)
-    // console.log(interview)
     const spotUpdate = 'addInterview'
     return Axios.put(`/api/appointments/${id}`, { interview })
         .then(() => dispatch({ type: SET_INTERVIEW, id, interview, spotUpdate }))
