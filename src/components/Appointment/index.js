@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./styles.scss";
 import Show from "./Show.js";
 import Empty from "./Empty.js";
@@ -18,10 +18,21 @@ const EDIT = "EDIT";
 const ERROR_SAVE = "ERROR SAVING";
 const ERROR_DELETE = "ERROR DELETING";
 
+
 export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
+  
+  useEffect(() => {
+    if (props.interview && mode === EMPTY) {
+     transition(SHOW);
+    }
+    if (props.interview === null && mode === SHOW) {
+     transition(EMPTY);
+    }
+   }, [props.interview, transition, mode]);
+
 
   function destroy() {
     transition(DELETING, true);
@@ -36,12 +47,12 @@ export default function Appointment(props) {
       transition(ERROR_SAVE, true);
     } else {
       transition(SAVING);
-      const interview = {
+      const interviewToBook = {
         student: name,
         interviewer
       };
       props
-        .bookInterview(props.id, interview)
+        .bookInterview(props.id, interviewToBook)
         .then(() => transition(SHOW))
         .catch(err => transition(ERROR_SAVE, true));
     }
@@ -57,7 +68,7 @@ export default function Appointment(props) {
           }}
         />
       )}
-      {mode === SHOW && (
+      {mode === SHOW && props.interview && (
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}

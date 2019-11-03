@@ -5,6 +5,23 @@ const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW";
 
+function getSpots(stateDays, stateAppointments, bookedId, bookedInterview) {
+  const days = stateDays.map(item => {
+    if (item["appointments"].includes(bookedId)) {
+      if (bookedInterview !== null) {
+        if (stateAppointments[bookedId]["interview"] === null) {
+          item["spots"]--;
+        }
+      } else if (bookedInterview === null)
+        if (stateAppointments[bookedId]["interview"] !== null) {
+          item["spots"]++;
+        }
+    }
+    return item;
+  });
+  return days;
+}
+
 function reducer(state, action) {
   switch (action.type) {
     case SET_DAY:
@@ -25,18 +42,13 @@ function reducer(state, action) {
         ...state.appointments,
         [action.id]: appointment
       };
-      const days = state.days.map(item => {
-        if (item["appointments"].includes(action.id)) {
-          if (action.spotUpdate === "addInterview") {
-            if (state.appointments[action.id]["interview"] === null) {
-              item["spots"]--;
-            }
-          } else if (action.spotUpdate === "removeInterview") {
-            item["spots"]++;
-          }
-        }
-        return item;
-      });
+      const days = getSpots(
+        state.days,
+        state.appointments,
+        action.id,
+        action.interview
+      );
+
       return { ...state, appointments, days };
     }
     default:
@@ -74,17 +86,28 @@ export default function useApplicationData() {
     });
   }, []);
 
+  useEffect(() => {
+    const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+    webSocket.onopen = function(event) {
+      webSocket.onmessage = function(event) {
+        const msg = JSON.parse(event.data);
+        const { type, id, interview } = msg;
+        if (type === "SET_INTERVIEW") {
+          dispatch({ type: SET_INTERVIEW, id, interview });
+        }
+      };
+    };
+  });
+
   function bookInterview(id, interview) {
-    const spotUpdate = "addInterview";
     return Axios.put(`/api/appointments/${id}`, { interview }).then(() =>
-      dispatch({ type: SET_INTERVIEW, id, interview, spotUpdate })
+      dispatch({ type: SET_INTERVIEW, id, interview })
     );
   }
 
   function cancelInterview(id) {
-    const spotUpdate = "removeInterview";
     return Axios.delete(`/api/appointments/${id}`).then(() =>
-      dispatch({ type: SET_INTERVIEW, id, interview: null, spotUpdate })
+      dispatch({ type: SET_INTERVIEW, id, interview: null })
     );
   }
   return { state, setDay, bookInterview, cancelInterview };
