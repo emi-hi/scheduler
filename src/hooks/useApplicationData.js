@@ -5,16 +5,18 @@ const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW";
 
-function getSpots(stateDays, stateAppointments, bookedId, bookedInterview) {
+function getSpots( stateDays, stateAppointments, bookedId, bookedInterview) {
+
   const days = stateDays.map(item => {
+    let newObj = {...item}
     if (item["appointments"].includes(bookedId)) {
       if (bookedInterview !== null && stateAppointments[bookedId]["interview"] === null) {
-          item["spots"]--;
+          newObj["spots"]--;
       } else if (bookedInterview === null && stateAppointments[bookedId]["interview"] !== null) {
-          item["spots"]++;
+          newObj["spots"]++;
         }
     }
-    return item;
+    return newObj;
   });
   return days;
 }
@@ -39,6 +41,7 @@ function reducer(state, action) {
         ...state.appointments,
         [action.id]: appointment
       };
+
       const days = getSpots(
         state.days,
         state.appointments,
