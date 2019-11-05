@@ -8,12 +8,9 @@ const SET_INTERVIEW = "SET_INTERVIEW";
 function getSpots(stateDays, stateAppointments, bookedId, bookedInterview) {
   const days = stateDays.map(item => {
     if (item["appointments"].includes(bookedId)) {
-      if (bookedInterview !== null) {
-        if (stateAppointments[bookedId]["interview"] === null) {
+      if (bookedInterview !== null && stateAppointments[bookedId]["interview"] === null) {
           item["spots"]--;
-        }
-      } else if (bookedInterview === null)
-        if (stateAppointments[bookedId]["interview"] !== null) {
+      } else if (bookedInterview === null && stateAppointments[bookedId]["interview"] !== null) {
           item["spots"]++;
         }
     }
