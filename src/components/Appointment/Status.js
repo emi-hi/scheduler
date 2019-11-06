@@ -1,4 +1,3 @@
-
 import React from "react";
 
 export default function Status(props) {
@@ -11,5 +10,5 @@ export default function Status(props) {
       />
       <h1 className="text--semi-bold">{props.message}</h1>
     </main>
-  )
+  );
 }
