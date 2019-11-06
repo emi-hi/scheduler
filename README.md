@@ -37,7 +37,6 @@ Install dependencies with `npm install`.
     -react-hooks-testing-library
     -react-scripts
     -ws
-    -cypress
 
 ## Running Webpack Development Server
 
