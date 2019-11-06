@@ -11,10 +11,10 @@ to add a new appointment, click the plus sign on an empty timeslot, a form will 
 !["add a new appointment"](https://github.com/emi-hi/scheduler/blob/master/docs/add_appointment.png)
 
 if the user doesn't enter a name, an error appears
-!["error: enter a name"](https://github.com/emi-hi/scheduler/blob/master/docs/error_student.png)
+!["error: enter a name"](https://github.com/emi-hi/scheduler/blob/master/docs/error_interviewer.png)
 
 if the user doesn't select an interviewer, an error appears
-!["error: choose an interviewer](https://github.com/emi-hi/scheduler/blob/master/docs/error_interviewer.png)
+!["error: choose an interviewer](https://github.com/emi-hi/scheduler/blob/master/docs/error_student.png)
 
 after appointment is created, it appears on the day where it used to be empty
 !["new appointment"](https://github.com/emi-hi/scheduler/blob/master/docs/confirmed_appointment.png)
