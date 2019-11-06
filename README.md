@@ -1,9 +1,8 @@
 # Interview Scheduler
-Interview scheduler is an app built with React and Axios. It allows users to schedule appointments with interviewers. There are 5 appointment times available per day. If an appointment is booked, the number of spots available on that day decreases. If an appointment is cancelled, the number increases. 
+Interview scheduler is a single page application built with React and Axios. It allows users to schedule appointments with interviewers. There are 5 appointment times available per day. If an appointment is booked, the number of spots available on that day decreases. If an appointment is cancelled, the number increases. Data is persisted by the API server using a PostgreSQL database.
 
 
 Tests created using Jest, Cypress, and Storybook. 
-
 
 !["screenshot of main page"](https://github.com/emi-hi/scheduler/blob/master/docs/main_app.png)
 
@@ -29,14 +28,14 @@ Fork this repository, then clone your fork of this repository.
 Install dependencies with `npm install`.
 
 ### Dependencies
-    -axios
-    -classnames
-    -normalize.css
-    -react
-    -react-dom
-    -react-hooks-testing-library
-    -react-scripts
-    -ws
+  • axios
+  • classnames
+  • normalize.css
+  • react
+  • react-dom
+  • react-hooks-testing-library
+  • react-scripts
+  • ws
 
 ## Running Webpack Development Server
 
@@ -55,3 +54,18 @@ npm test
 ```sh
 npm run storybook
 ```
+
+## Behavioral Requirements
+• Interviews can be booked between Monday and Friday.
+• A user can switch between weekdays.
+• A user can book an interview in an empty appointment slot.
+• Interviews are booked by typing in a student name and clicking on an interviewer from a list of available interviewers.
+• A user can cancel an existing interview.
+• A user can edit the details of an existing interview.
+• The list of days informs the user how many slots are available for each day.
+• The expected day updates the number of spots available when an interview is booked or canceled.
+• A user is presented with a confirmation when they attempt to cancel an interview.
+• A user is shown an error if an interview cannot be saved or deleted.
+• A user is shown a status indicator while asynchronous operations are in progress.
+• When the user presses the close button of the error they are returned to the Form or Show view (skipping Status and Confirm).
+• The application makes API requests to load and persist data. We do not lose data after a browser refresh.
