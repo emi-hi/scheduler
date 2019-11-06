@@ -1,6 +1,6 @@
 //functions that are passed to components/application.js
 
-//makes a list of all appointments for selected day
+//makes a list of all appointments for selected day.
 export function getAppointmentsForDay(state, day) {
   let filteredApps = [];
   for (let days of state.days) {
@@ -14,7 +14,7 @@ export function getAppointmentsForDay(state, day) {
 }
 
 //makes an object that is passed to Appointment component. 
-//it returns the outputinterview for each of the timeslots in the day
+//it returns the outputinterview for each of the timeslots in the day.
 export function getInterview(state, interview) {
   if (interview === null) {
     return null;
