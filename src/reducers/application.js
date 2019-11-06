@@ -2,15 +2,21 @@ const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW";
 
-function getSpots( stateDays, stateAppointments, bookedId, bookedInterview) {
+function getSpots(stateDays, stateAppointments, bookedId, bookedInterview) {
   const days = stateDays.map(item => {
-    let newObj = {...item}
+    let newObj = { ...item };
     if (item["appointments"].includes(bookedId)) {
-      if (bookedInterview !== null && stateAppointments[bookedId]["interview"] === null) {
-          newObj["spots"]--;
-      } else if (bookedInterview === null && stateAppointments[bookedId]["interview"] !== null) {
-          newObj["spots"]++;
-        }
+      if (
+        bookedInterview !== null &&
+        stateAppointments[bookedId]["interview"] === null
+      ) {
+        newObj["spots"]--;
+      } else if (
+        bookedInterview === null &&
+        stateAppointments[bookedId]["interview"] !== null
+      ) {
+        newObj["spots"]++;
+      }
     }
     return newObj;
   });
@@ -54,4 +60,4 @@ export default function reducer(state, action) {
   }
 }
 
-export { SET_APPLICATION_DATA, SET_DAY, SET_INTERVIEW }
+export { SET_APPLICATION_DATA, SET_DAY, SET_INTERVIEW };
