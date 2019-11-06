@@ -7,6 +7,7 @@ import Form from "./Form.js";
 import Status from "./Status.js";
 import Confirm from "./Confirm.js";
 import Error from "./Error.js";
+import Header from "components/Appointment/Header.js";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
@@ -50,12 +51,11 @@ export default function Appointment(props) {
       .bookInterview(props.id, interviewToBook)
       .then(() => transition(SHOW))
       .catch(err => transition(ERROR_SAVE, true));
-    // }
   }
 
   return (
     <article className="appointment" data-testid="appointment">
-      <header>{props.time}</header>
+      <Header time={props.time}/>
       {mode === EMPTY && (
         <Empty
           onAdd={() => {
