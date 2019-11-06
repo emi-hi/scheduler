@@ -2,7 +2,12 @@ import React from "react";
 
 import { fireEvent } from "@testing-library/react";
 
-import { render, cleanup } from "@testing-library/react";
+import {
+  render,
+  cleanup,
+  getAllByTestId,
+  getByAltText
+} from "@testing-library/react";
 
 import Form from "components/Appointment/Form";
 
@@ -31,11 +36,15 @@ describe("Form", () => {
     expect(getByTestId("student-name-input")).toHaveValue("Lydia Miller-Jones");
   });
 
-  xit("validates that the student name is not blank", () => {
+  it("validates that the student name is not blank", async () => {
     const onSave = jest.fn();
-    const { getByText } = render(
+    const { container, getByText } = render(
       <Form interviewers={interviewers} onSave={onSave} />
     );
+
+    const appointment = getAllByTestId(container, "interviewers")[0];
+
+    fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
 
     fireEvent.click(getByText("Save"));
 
@@ -43,11 +52,15 @@ describe("Form", () => {
     expect(onSave).not.toHaveBeenCalled();
   });
 
-  xit("can successfully save after trying to submit an empty student name", () => {
+  it("can successfully save after trying to submit an empty student name", () => {
     const onSave = jest.fn();
-    const { getByText, getByPlaceholderText, queryByText } = render(
+    const { container, getByText, getByPlaceholderText, queryByText } = render(
       <Form interviewers={interviewers} onSave={onSave} />
     );
+
+    const appointment = getAllByTestId(container, "interviewers")[0];
+
+    fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
 
     fireEvent.click(getByText("Save"));
 
@@ -63,7 +76,7 @@ describe("Form", () => {
     expect(queryByText(/student name cannot be blank/i)).toBeNull();
 
     expect(onSave).toHaveBeenCalledTimes(1);
-    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", null);
+    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1);
   });
 
   it("calls onCancel and resets the input field", () => {
