@@ -6,11 +6,13 @@ function getSpots(stateDays, stateAppointments, bookedId, bookedInterview) {
   const days = stateDays.map(item => {
     let newObj = { ...item };
     if (item["appointments"].includes(bookedId)) {
+      //if an appointment has been booked and the state appointment is null, decrease spots (appointment has been booked)
       if (
         bookedInterview !== null &&
         stateAppointments[bookedId]["interview"] === null
       ) {
         newObj["spots"]--;
+      //if the booked appointment is NULL and the state isn't, increase the spots (appointment has been deleted)
       } else if (
         bookedInterview === null &&
         stateAppointments[bookedId]["interview"] !== null

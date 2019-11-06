@@ -1,5 +1,5 @@
 import React from "react";
-
+//shows loading icon with a message (saving, deleting, etc)
 export default function Status(props) {
   return (
     <main className="appointment__card appointment__card--status">

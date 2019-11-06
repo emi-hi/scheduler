@@ -4,6 +4,8 @@ export default function useVisualMode(initial) {
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
 
+  //by default replace is false, but in some situations it will be true
+  //ie when deleting, or if there is an error
   function transition(newMode, replace = false) {
     setMode(newMode);
     setHistory(prev => {

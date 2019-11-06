@@ -16,6 +16,8 @@ export default function Form(props) {
     reset();
   };
 
+  //make sure there is both an interviewer and student name
+  //if its all good, save it!
   function validate() {
     if (!interviewer) {
       setError("Please choose an interviewer!");

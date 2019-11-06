@@ -25,14 +25,17 @@ export default function Appointment(props) {
   );
 
   useEffect(() => {
+    //appointment has been added, transition to show it
     if (props.interview && mode === EMPTY) {
       transition(SHOW);
     }
+    //appointment has been deleted and mode is in show, transition to empty
     if (props.interview === null && mode === SHOW) {
       transition(EMPTY);
     }
   }, [props.interview, transition, mode]);
 
+  //delete the appointment
   function destroy() {
     transition(DELETING, true);
     props
@@ -40,7 +43,7 @@ export default function Appointment(props) {
       .then(() => transition(EMPTY))
       .catch(err => transition(ERROR_DELETE, true));
   }
-
+  //show "saving" mode, then save the appointment (it has already been validated)
   function save(name, interviewer) {
     transition(SAVING);
     const interviewToBook = {

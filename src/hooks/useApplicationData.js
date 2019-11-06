@@ -35,12 +35,15 @@ export default function useApplicationData() {
   }, []);
 
   useEffect(() => {
+    //set up the websocket
     const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
     webSocket.onopen = function(event) {
       webSocket.onmessage = function(event) {
+        //get the message from the server, parse it
         const msg = JSON.parse(event.data);
         const { type, id, interview } = msg;
         if (type === "SET_INTERVIEW") {
+          //send to reducer (which will recount spots)
           dispatch({ type: SET_INTERVIEW, id, interview });
         }
       };
@@ -48,12 +51,14 @@ export default function useApplicationData() {
   });
 
   function bookInterview(id, interview) {
+    //make a put request then send the information to the reducer
     return Axios.put(`/api/appointments/${id}`, { interview }).then(() =>
       dispatch({ type: SET_INTERVIEW, id, interview })
     );
   }
 
   function cancelInterview(id) {
+    //make a delete request then send the information to the reducer
     return Axios.delete(`/api/appointments/${id}`).then(() =>
       dispatch({ type: SET_INTERVIEW, id, interview: null })
     );
